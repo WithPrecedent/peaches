@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "peaches"
+version = "0.1."
+description = "flexible parsing system"
+authors = ["corey rayburn yung <coreyrayburnyung@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/WithPrecedent/peaches"
+repository = "https://github.com/WithPrecedent/peaches"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ashford = "^0.1.0"
+camina = "^0.1.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.extras]
+formats = ["toml", "pyyaml"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
