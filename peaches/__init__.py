@@ -1,5 +1,5 @@
 """
-peaches: flexible, easy python project configuration
+peaches: clear, clean representations of python objects
 Corey Rayburn Yung <coreyrayburnyung@gmail.com>
 Copyright 2020-2022, Corey Rayburn Yung
 License: Apache-2.0
@@ -18,8 +18,6 @@ License: Apache-2.0
     
     
 ToDo:
-   Add tests for dict, yaml, and toml (and figure out optional import of yaml
-    and toml dependencies)
    
    
 For Developers:
@@ -54,5 +52,6 @@ __package__ = 'peaches'
 __author__ = 'Corey Rayburn Yung'
 
 
-from .core import *
-from .parsers import *
+from .base import *
+from .represent import *
+from .views import *
