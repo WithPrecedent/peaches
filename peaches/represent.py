@@ -52,6 +52,8 @@ from typing import Any, Optional, Type
 
 import camina
 
+from . import base
+ 
 
 LINE_BREAK: str = '\n'
 WHITESPACE: str = ' '
@@ -105,13 +107,13 @@ def beautify(
    
 def beautify_dict(
     item: Mapping[Hashable, Any], 
-    facade: Representation | Type[Any], 
+    facade: base.Representation | Type[Any], 
     offsets: int) -> str:
     """Returns a beautiful str representation of a dict-like 'item'.
 
     Args:
         item (Mapping[Hashable, Any]): item to be represented.
-        facade (Representation | Type[Any]): representation for item or 
+        facade (base.Representation | Type[Any]): representation for item or 
             a type matching a key in the 'facades' dict.
         offsets (int): number of tabs of whitespace to put before the str
             representation.
@@ -120,7 +122,7 @@ def beautify_dict(
         str: a beautiful representation of 'item'.
         
     """
-    if not isinstance(facade, Representation):
+    if not isinstance(facade, base.Representation):
         facade = facades[facade]
     indent = _get_indent(offsets = offsets)
     inner = _get_indent(offsets = offsets, extra = TAB)
@@ -141,7 +143,7 @@ def beautify_dict(
 
 def beautify_object(
     item: object, 
-    facade: Representation | Type[Any], 
+    facade: base.Representation | Type[Any], 
     offsets: int,
     package: Optional[str] = None,
     exclude: MutableSequence[str] = None,
@@ -163,7 +165,7 @@ def beautify_object(
         str: a beautiful representation of 'item'.
         
     """
-    if not isinstance(facade, Representation):
+    if not isinstance(facade, base.Representation):
         facade = facades[facade]
     if package is None:
         module = inspect.getmodule(item)
@@ -201,20 +203,20 @@ def beautify_object(
 
 def beautify_list(
     item: MutableSequence[Any] | set[Any] | tuple[Any, ...], 
-    facade: Representation | Type[Any], 
+    facade: base.Representation | Type[Any], 
     offsets: int) -> str:
     """Returns a beautiful string representation of a list-like 'item'.
 
     Args:
         item (MutableSequence[Any] | set[Any] | tuple[Any, ...]): the list, 
             set, tuple, or similar object to return a str representation for.
-        facade (Representation | Type[Any]): 
+        facade (base.Representation | Type[Any]): 
         offsets (int): [description]
 
     Returns:
         str: [description]
     """
-    if not isinstance(facade, Representation):
+    if not isinstance(facade, base.Representation):
         facade = facades[facade]
     indent = _get_indent(offsets = offsets)
     inner = _get_indent(offsets = offsets, extra = TAB)
@@ -235,7 +237,7 @@ def beautify_list(
 
 def beautify_string(
     item: MutableSequence[Any], 
-    facade: Representation | Type[Any], 
+    facade: base.Representation | Type[Any], 
     offsets: int) -> str:
     """[summary]
 
@@ -246,7 +248,7 @@ def beautify_string(
     Returns:
         str: [description]
     """
-    if not isinstance(facade, Representation):
+    if not isinstance(facade, base.Representation):
         facade = facades[facade]
     indent = _get_indent(offsets = offsets)
     return f'{indent}{facade.name}: {facade.start}{item}{facade.end}'
@@ -265,7 +267,7 @@ def _get_indent(offsets: int, extra: int = 0) -> str:
     """
     return offsets * INDENT + extra * WHITESPACE
 
-def _classify_facade(item: Any) -> Representation:
+def _classify_facade(item: Any) -> base.Representation:
     """[summary]
 
     Args:
@@ -285,33 +287,33 @@ def _classify_facade(item: Any) -> Representation:
    
 """ Module Level Attributes """
 
-facades: dict[str, Representation] = {}
-facades[str] = Representation(
+facades: dict[str, base.Representation] = {}
+facades[str] = base.Representation(
     name = 'string',
     method = beautify_string,
     start = '',
     end = '')
-facades[MutableMapping] = Representation(
+facades[MutableMapping] = base.Representation(
     name = 'dictionary',
     method = beautify_dict,
     start = '{',
     end = '}')
-facades[MutableSequence] = Representation(
+facades[MutableSequence] = base.Representation(
     name = 'list',
     method = beautify_list,
     start = '[',
     end = ']')
-facades[Sequence] = Representation(
+facades[Sequence] = base.Representation(
     name = 'tuple',
     method = beautify_list,
     start = '(',
     end = ')')
-facades[set] = Representation(
+facades[set] = base.Representation(
     name = 'set',
     method = beautify_list,
     start = '{',
     end = '}')
-facades[object] = Representation(
+facades[object] = base.Representation(
     name = 'object', 
     method = beautify_object,
     start = '',
